@@ -1,0 +1,180 @@
+<!-- HTML output -->
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+    <title>College Events</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+    <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/src/js/bootstrap-datetimepicker.js"></script>
+    <script src="http://maps.googleapis.com/maps/api/js"></script>
+   
+   
+
+   <script>
+     
+     
+    
+
+var map;
+var myCenter=new google.maps.LatLng(28.598388697125415,-81.19900703430176);
+
+function initialize()
+{
+var mapProp = {
+  center:myCenter,
+  zoom:5,
+  mapTypeId:google.maps.MapTypeId.ROADMAP
+  };
+
+  map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+  google.maps.event.addListener(map, 'click', function(event) {
+    placeMarker(event.latLng);
+  });
+}
+
+function placeMarker(location) {
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+  });
+  var infowindow = new google.maps.InfoWindow({
+    
+    content: 'Latitude: ' + location.lat() + '<br>Longitude: ' + location.lng()
+  });
+  infowindow.open(map,marker);
+  
+  //give back to html value of latitude and longitude
+  document.getElementById("lat").value = location.lat(); 
+  document.getElementById("log").value = location.lng();
+}
+
+
+
+google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+  <link rel="stylesheet" href="events.css">
+
+  </head>
+  
+  <body>
+    <!-- banner -->
+     <div class="jumbotron">
+       <div class='col-sm-offset-3'>
+        <h1>College Events</h1>
+        
+       <p><nav>
+		<a href='profile.php'>Profile Home</a>|
+  		<a href='rsoPage.php'>RSO Page</a>|
+  		<a href='eventsCreate.html'>Create Event</a>|
+  		<a href='uniProfile.php'>Create University Profile</a>|
+		<a href='logout.php'>Logout</a>|
+		</nav> </p>
+      <p> </p> 
+    </div>
+    </div>
+    <div class="container">
+      <!-- output userinfo -->
+      <div class="container">
+    <div class='col-sm-offset-2'>
+        <h2>Create Event</h2>
+        </div>
+       
+        
+        <form class="form-horizontal" id="eventForm" role="form" action="eventSubmit.php" method="post">
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="email">Name:</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" name="name" id="name" placeholder="Enter Name" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="category">Category:</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" name="category" id="category" placeholder="Enter Category" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="description">Description:</label>
+            <div class="col-sm-5">
+              <textarea class="form-control" rows="5" name="description" id="description"></textarea>
+              <br>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="date">Date:</label>
+            <div class=' col-sm-3'>
+              <div class='input-group date' id='datetimepicker1'>
+                <input type='text' id="date" name="date" class="form-control" required/>
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+              </div>
+            </div>
+            <script type="text/javascript">
+              $(function () {
+                      $('#datetimepicker1').datetimepicker();
+                  });
+            </script>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="description">Location:</label>
+            <div class="col-sm-5">
+               <input type="text" class="form-control" name="locationName" id="locationName" placeholder="Enter Events Location Name" required>
+     <input type="text" class="form-control" name="locationAddress" id="locationAddress" placeholder="Enter Events Location Address" required>
+         
+
+      <div id="googleMap" style="width:500px;height:380px;"></div>
+
+                <input id="lat" name="lat" visibility="hidden"></input>
+                <input id="log" name="log" visibility="hidden"></input>
+
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="category">Contact phone:</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" name="phone" id="phone" placeholder="Enter Phone Number" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="category">Contact email:</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="category">Event Visibility:</label>
+            <div class="col-sm-2">
+              <div class="radio">
+                <label>
+                  <input type="radio" name="visibility" value="public" id="public">Public Event</label>
+                <br>
+                <label>
+                  <input type="radio" name="visibility" value="private" id="private">Private Event</label>
+                <br>
+                <label>
+              <input type="radio" name="visibility" value="rso" id="rso">RSO Event</label>
+                  <input type="text" class="form-control" id="rsoEvent" name="rsoEvent" placeholder="Enter name of RSO" >
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-5">
+              <button type="submit" value="submit" id="eSubmit" name="eSubmit" class="btn btn-default">Submit</button>
+            </div>
+          </div>
+          
+     
+        </form>
+      </div>
+      
+      
+  </body>
+
+</html>
